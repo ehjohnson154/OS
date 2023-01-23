@@ -8,7 +8,7 @@ int main(int argc, const char *argv[])
     char buffer[MAX_BYTE];
 
 
-    int arguments;
+    // int arguments;
     printf("Name: %s",argv[0]);
     if(argc==1){
         printf("\no commands!");
