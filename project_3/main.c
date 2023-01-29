@@ -8,73 +8,74 @@
 
 #define MAX 2048
 
-int main()
-{
+//execute command passed to it
+void command (char ** args){
+
+    //forking process
+    pid_t pid = fork();
+
+    //if valid, execute command
+    if (pid == 0) {
+        execvp(args[0], args);
+        perror("ERROR: ");
+        exit(1);
+    }
+
+    wait(NULL);
+    printf("command executed!\n");
+
+}
+//main function that runs shell
+int main() {
     
+    //setting up variables for strtok
     char buf[MAX] = "",
     *delim = " \n";
 
-
-    // char buf[MAX];
+    //continuous loop
     while(1) {
-        
+        //gets value, places into buffer array
         fgets(buf, MAX, stdin);
-
-        // printf("string is: %s\n", buf);
         char * array[MAX];
         int i = 0;
+        //loop cycles through each tokenized item, places into array
         for (char *token = strtok (buf, delim); token; token = strtok (NULL, delim)){
             array[i] = token;
-            printf ("%s\n", array[i]);
+            //printf ("%s\n", array[i]);
             i++;
-            //place into array
-
-
 
         }
-        i++;
+        //null terminator
         array[i] = '\0';
-        
-        execvp(array[0],array);
+
+        //if statements to check for system call commands or exit
+        if (strcmp(array[0],"cd")==0){
+            //printf("in cd!\n"); 
+            int ch = chdir(array[1]);
+            
+            if(ch<0){
+                printf("chdir failure!!\n");
+                perror("ERROR: ");
+            }
+            else{
+                printf("cd executed!\n");
+            }
+            //printf("finished chdir!");
+        }
+
+        else if (strcmp(array[0],"exit")==0){
+            printf("exiting!...");
+            exit(0);
+
+        }
+
+        //if not syscall, execute command
+        else {
+        command(array);
+        }
+        //execvp(array[0],array);
     }
     return 0;
 }
 
 
-
-// void command {
-
-
-// }
-
-    
-    // char *token;                  //split command into separate strings
-    // token = strtok(line," ");
-    // int i=0;
-    // while(token!=NULL){
-    //     argv[i]=token;      
-    //     token = strtok(NULL," ");
-    //     i++;
-
-
-
-
-//  while (1) {
-//     fgets(line, MAX_LINE_SIZE, stdin); // read the line from input_file
-
-
-//     // initialize next_field to point to the first field on the line
-//     next_field = strtok(line, " \n");
-    
-//     // iterate through the fields on the line until we have exhausted them. strtok
-//     // will return NULL when there are no more fields to be read
-//     while (next_field != NULL) {
-//       // write the current field to the output file
-//     //   fprintf(output_file, "%d: %s\n", line_number, next_field);
-
-//       // get the next word on the line--remember to pass NULL as the first argument
-//       // because only the first call to strtok on each line should receive a pointer
-//       // to line
-//       next_field = strtok(NULL, " \n");
-//     }
-//   }
