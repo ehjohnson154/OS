@@ -41,7 +41,7 @@ int main() {
         //loop cycles through each tokenized item, places into array
         for (char *token = strtok (buf, delim); token; token = strtok (NULL, delim)){
             array[i] = token;
-            //printf ("%s\n", array[i]);
+            printf ("%s\n", array[i]);
             i++;
 
         }
