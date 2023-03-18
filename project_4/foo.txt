@@ -1,0 +1,6 @@
+Makefile
+foo.txt
+lswc
+lswc.c
+redirout
+redirout.c
